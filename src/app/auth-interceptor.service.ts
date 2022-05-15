@@ -9,11 +9,13 @@ interceptor:
 
 import {
 	HttpEvent,
+	HttpEventType,
 	HttpHandler,
 	HttpInterceptor,
 	HttpRequest,
 } from "@angular/common/http";
 import { Observable } from "rxjs";
+import { reduce, tap } from "rxjs/operators";
 
 //below code will run for every requests that leaves the app, unless manually restrict
 export class AuthInterceptorService implements HttpInterceptor {
@@ -21,11 +23,14 @@ export class AuthInterceptorService implements HttpInterceptor {
 		req: HttpRequest<any>,
 		next: HttpHandler
 	): Observable<HttpEvent<any>> {
-		//restrict the interceptor for specific url
+		//ex: restrict the interceptor for specific url
 		if (req.url != "someURL") {
 		}
 
-		console.log("Request is on its way");
-		return next.handle(req);
+		const modifedRequest = req.clone({
+			headers: req.headers.append("Auth", "xyz"),
+		});
+
+		return next.handle(modifedRequest);
 	}
 }
