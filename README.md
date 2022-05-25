@@ -1,4 +1,4 @@
 
-# angular-http
+# Angular-http
 
 Angular project with HTTP example
